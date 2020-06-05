@@ -1,4 +1,4 @@
-var quoteNum = 0;
+var prevQuoteNum = 0;
 
 /**
  * Adds a random quote to the page.
@@ -14,15 +14,14 @@ function addRandomQuote() {
   // Pick a random quote.
   var newQuoteNum = Math.floor(Math.random() * quotes.length);
   
-  // Prevent the same quote from showing consecutively
-  if (newQuoteNum == quoteNum) {
+  // If the quote is the same as the prev one generated, pick the next one in the array.
+  if (newQuoteNum == prevQuoteNum) {
       ++newQuoteNum;
       newQuoteNum %= quotes.length;
   }
-  quoteNum = newQuoteNum;
-  const quote = quotes[quoteNum];
 
   // Add it to the page.
   const quoteContainer = document.getElementById('quote-container');
-  quoteContainer.innerText = quote;
+  quoteContainer.innerText = quotes[newQuoteNum];
+  prevQuoteNum = newQuoteNum;
 }
