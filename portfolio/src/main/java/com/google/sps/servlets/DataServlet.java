@@ -13,20 +13,39 @@
 // limitations under the License.
 
 package com.google.sps.servlets;
+import com.google.gson.Gson;
 
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
+  ArrayList<String> messages = new ArrayList<String>();
+
+  public DataServlet() {
+    messages.add("Hello world!");
+    messages.add("This is a message.");
+    messages.add("12345");
+  }
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    response.setContentType("text/html;");
-    response.getWriter().println("Hello Lilian!");
+    String json = convertToJsonUsingGson(messages);
+    response.setContentType("application/json;");
+    response.getWriter().println(json);
+  }
+
+    /**
+   * Converts a Java ArrayList<String> into a JSON string using the Gson library.
+   */
+  private String convertToJsonUsingGson(ArrayList<String> listOfStrings) {
+    Gson gson = new Gson();
+    String json = gson.toJson(listOfStrings);
+    return json;
   }
 }

@@ -26,8 +26,9 @@ function addRandomQuote() {
   prevQuoteNum = newQuoteNum;
 }
 
-async function getServerMessage() {
+async function getComments() {
   const response = await fetch('/data');
-  const data = await response.text();
-  document.getElementById('quote-container').innerText = data;
+  const commentsList = await response.text();
+  const commentsListElement = document.getElementById('comments-container')
+  commentsListElement.innerText = commentsList;
 }

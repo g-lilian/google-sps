@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
   </head>
-  <body>
+  <body onload="getComments()">
     <div id="content">
       <h1>Portfolio</h1>
       <h2>About Me</h2>
@@ -22,12 +22,15 @@
       </p>
       <p>Click the button to spawn one of my favourite quotes:</p>
       <button onclick="addRandomQuote()">Quote</button>
-      <button onclick="getServerMessage()">Data</button>
       <div id="quote-container"></div>
       <p></p>
       <p>See some of my previous <a href="projects.html">projects.</a></p>
       <p>Check out the <a href="gallery.html">gallery</a> :)</p>
       <img src="images/photo.jpg"/>
+      <p>
+        <h2>Comments</h2>
+        <div id="comments-container"></div>
+      </p>
     </div>
   </body>
 </html>

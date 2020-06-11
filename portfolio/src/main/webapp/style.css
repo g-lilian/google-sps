@@ -8,6 +8,10 @@
   margin-top: 20px;
 }
 
+#comments-container {
+  margin-top: 20px;
+}
+
 .image-thumbnails {
   display: flex;
   flex-wrap: wrap;
