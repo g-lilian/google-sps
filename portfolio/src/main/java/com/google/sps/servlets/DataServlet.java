@@ -26,8 +26,10 @@ import java.util.ArrayList;
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
   ArrayList<String> messages = new ArrayList<String>();
+  Gson gson;
 
   public DataServlet() {
+    gson = new Gson();
     messages.add("Hello world!");
     messages.add("This is a message.");
     messages.add("12345");
@@ -40,11 +42,10 @@ public class DataServlet extends HttpServlet {
     response.getWriter().println(json);
   }
 
-    /**
+  /**
    * Converts a Java ArrayList<String> into a JSON string using the Gson library.
    */
   private String convertToJsonUsingGson(ArrayList<String> listOfStrings) {
-    Gson gson = new Gson();
     String json = gson.toJson(listOfStrings);
     return json;
   }
