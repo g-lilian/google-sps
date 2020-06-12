@@ -15,6 +15,13 @@
 package com.google.sps.servlets;
 import com.google.gson.Gson;
 
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.SortDirection;
+
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -22,18 +29,30 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 
+
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
-  ArrayList<String> messages = new ArrayList<String>();
   Gson gson;
+  DatastoreService datastore;
 
   public DataServlet() {
     gson = new Gson();
+    datastore = DatastoreServiceFactory.getDatastoreService();
   }
 
   @Override
-  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {  
+    // Get comments from Datastore and show on the page.
+    ArrayList<String> messages = new ArrayList<String>();
+    Query query = new Query("Comment").addSort("text", SortDirection.DESCENDING);
+    PreparedQuery results = datastore.prepare(query);
+
+    for (Entity entity : results.asIterable()) {
+        String comment = (String) entity.getProperty("text");
+        messages.add(comment);
+    }
+
     String json = convertToJsonUsingGson(messages);
     response.setContentType("application/json;");
     response.getWriter().println(json);
@@ -52,8 +71,10 @@ public class DataServlet extends HttpServlet {
     // Get the comment input from the form.
     String comment = getParameter(request, "text-input", "");
 
-    // Add the comment to the ArrayList.
-    messages.add(comment);
+    // Add the comment to Datastore.
+    Entity commentEntity = new Entity("Comment");
+    commentEntity.setProperty("text", comment);
+    datastore.put(commentEntity);
 
     // Redirect back to the main page.
     response.sendRedirect("/index.html");
