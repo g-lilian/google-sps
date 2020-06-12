@@ -27,10 +27,15 @@
       <p>See some of my previous <a href="projects.html">projects.</a></p>
       <p>Check out the <a href="gallery.html">gallery</a> :)</p>
       <img src="images/photo.jpg"/>
-      <p>
-        <h2>Comments</h2>
-        <div id="comments-container"></div>
-      </p>
+      <form action="/data" method="POST">
+        <p>
+            <h2>Comments</h2>
+            <div id="comments-container"></div>
+            <br/><br/>
+            <textarea name="text-input"></textarea>
+            <input type="submit" />
+        </p>
+      </form>
     </div>
   </body>
 </html>

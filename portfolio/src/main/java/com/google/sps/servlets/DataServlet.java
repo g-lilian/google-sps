@@ -30,9 +30,6 @@ public class DataServlet extends HttpServlet {
 
   public DataServlet() {
     gson = new Gson();
-    messages.add("Hello world!");
-    messages.add("This is a message.");
-    messages.add("12345");
   }
 
   @Override
@@ -48,5 +45,29 @@ public class DataServlet extends HttpServlet {
   private String convertToJsonUsingGson(ArrayList<String> listOfStrings) {
     String json = gson.toJson(listOfStrings);
     return json;
+  }
+
+  @Override
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    // Get the comment input from the form.
+    String comment = getParameter(request, "text-input", "");
+
+    // Add the comment to the ArrayList.
+    messages.add(comment);
+
+    // Redirect back to the main page.
+    response.sendRedirect("/index.html");
+  }
+
+  /**
+   * @return the request parameter, or the default value if the parameter
+   *         was not specified by the client
+   */
+  private String getParameter(HttpServletRequest request, String name, String defaultValue) {
+    String value = request.getParameter(name);
+    if (value == null) {
+      return defaultValue;
+    }
+    return value;
   }
 }
