@@ -28,7 +28,16 @@ function addRandomQuote() {
 
 async function getComments() {
   const response = await fetch('/data');
-  const commentsList = await response.text();
-  const commentsListElement = document.getElementById('comments-container')
-  commentsListElement.innerText = commentsList;
+  var commentsList = await response.text();
+
+  // Display comments in a list.
+  commentsList = JSON.parse(commentsList)
+  var commentsListElement = document.getElementById('comments-container')
+  var ul = document.createElement('ul');
+  for (var i = 0; i < commentsList.length; ++i) {
+    var li=document.createElement('li');
+    li.innerHTML = commentsList[i];
+    ul.appendChild(li);                                 
+  }
+  commentsListElement.appendChild(ul);
 }
