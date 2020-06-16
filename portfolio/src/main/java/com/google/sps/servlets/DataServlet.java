@@ -20,6 +20,9 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.cloud.language.v1.Document;
+import com.google.cloud.language.v1.LanguageServiceClient;
+import com.google.cloud.language.v1.Sentiment;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -28,7 +31,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 
 
-/** Servlet that returns some example content. TODO: modify this file to handle comments data */
+/** Servlet that processes comments and analyses comment sentiment. */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
   Gson gson;
@@ -68,6 +71,15 @@ public class DataServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     // Get the comment input from the form.
     String comment = getParameter(request, "text-input", "");
+
+    // Calculate sentiment score.
+    Document doc =
+        Document.newBuilder().setContent(comment).setType(Document.Type.PLAIN_TEXT).build();
+    LanguageServiceClient languageService = LanguageServiceClient.create();
+    Sentiment sentiment = languageService.analyzeSentiment(doc).getDocumentSentiment();
+    float score = sentiment.getScore();
+    languageService.close();
+    System.out.println(score);
 
     // Add the comment to Datastore.
     if (!comment.equals("")) {
