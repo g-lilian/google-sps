@@ -35,8 +35,8 @@ async function getComments() {
   var commentsListElement = document.getElementById('comments-container')
   var ul = document.createElement('ul');
   for (var i = 0; i < commentsList.length; ++i) {
-    var li=document.createElement('li');
-    li.innerHTML = commentsList[i];
+    var li = document.createElement('li');
+    li.innerHTML = commentsList[i].text + ", " + commentsList[i].sentiment_score;
     ul.appendChild(li);                                 
   }
   commentsListElement.appendChild(ul);

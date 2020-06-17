@@ -45,12 +45,14 @@ public class DataServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {  
     // Get comments from Datastore and show on the page.
-    ArrayList<String> messages = new ArrayList<String>();
-    Query query = new Query("Comment").addSort("text", SortDirection.DESCENDING);
+    ArrayList<Comment> messages = new ArrayList<Comment>();
+    Query query = new Query("Comment").addSort("sentiment", SortDirection.DESCENDING);
     PreparedQuery results = datastore.prepare(query);
 
     for (Entity entity : results.asIterable()) {
-        String comment = (String) entity.getProperty("text");
+        String comment_text = (String) entity.getProperty("text");
+        double sentiment_score = (double) entity.getProperty("sentiment");
+        Comment comment = new Comment(comment_text, sentiment_score);
         messages.add(comment);
     }
 
@@ -62,9 +64,25 @@ public class DataServlet extends HttpServlet {
   /**
    * Converts a Java ArrayList<String> into a JSON string using the Gson library.
    */
-  private String convertToJsonUsingGson(ArrayList<String> listOfStrings) {
+  private String convertToJsonUsingGson(ArrayList<Comment> listOfStrings) {
     String json = gson.toJson(listOfStrings);
     return json;
+  }
+
+  /**
+   * Class for comments.
+   */
+  private static class Comment {
+      String text;
+      double sentiment_score;
+
+      public Comment(String text, double sentiment_score) {
+        this.text = text;
+        // truncate the double
+        int temp = (int)(sentiment_score*100);
+        double truncated = temp/100d;
+        this.sentiment_score = truncated;
+      }
   }
 
   @Override
@@ -79,12 +97,12 @@ public class DataServlet extends HttpServlet {
     Sentiment sentiment = languageService.analyzeSentiment(doc).getDocumentSentiment();
     float score = sentiment.getScore();
     languageService.close();
-    System.out.println(score);
 
-    // Add the comment to Datastore.
+    // Add the comment and its sentiment score to Datastore.
     if (!comment.equals("")) {
         Entity commentEntity = new Entity("Comment");
         commentEntity.setProperty("text", comment);
+        commentEntity.setProperty("sentiment", score);
         datastore.put(commentEntity);
     }
 
