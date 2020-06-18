@@ -32,12 +32,25 @@ async function getComments() {
 
   // Display comments in a list.
   commentsList = JSON.parse(commentsList)
-  var commentsListElement = document.getElementById('comments-container')
-  var ul = document.createElement('ul');
-  for (var i = 0; i < commentsList.length; ++i) {
-    var li = document.createElement('li');
-    li.innerHTML = commentsList[i].text + ", " + commentsList[i].sentiment_score;
-    ul.appendChild(li);                                 
+  for (i=0; i<commentsList.length; i++) {
+    var commentsContainer = document.getElementById('comments-container')
+    const comment = commentsList[i];
+    var commentSection = createCommentSection(comment);
+    commentsContainer.appendChild(commentSection);
   }
-  commentsListElement.appendChild(ul);
+}
+
+function createCommentSection(comment) {
+  const commentWrapper = document.createElement("div");
+  commentWrapper.id = "comment-wrapper";
+  commentWrapper.innerHTML = 
+    `<div class="row">
+      <div class="column">
+        <p>${comment.text}</p>
+      </div>
+      <div class="column">
+        <p>${comment.sentiment_score}</p>
+      </div>
+    </div><hr>`;
+  return commentWrapper;
 }

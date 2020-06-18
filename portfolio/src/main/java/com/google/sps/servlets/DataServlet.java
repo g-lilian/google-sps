@@ -45,7 +45,7 @@ public class DataServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {  
     // Get comments from Datastore and show on the page.
-    ArrayList<Comment> messages = new ArrayList<Comment>();
+    ArrayList<Comment> comments = new ArrayList<Comment>();
     Query query = new Query("Comment").addSort("sentiment", SortDirection.DESCENDING);
     PreparedQuery results = datastore.prepare(query);
 
@@ -53,16 +53,16 @@ public class DataServlet extends HttpServlet {
         String comment_text = (String) entity.getProperty("text");
         double sentiment_score = (double) entity.getProperty("sentiment");
         Comment comment = new Comment(comment_text, sentiment_score);
-        messages.add(comment);
+        comments.add(comment);
     }
 
-    String json = convertToJsonUsingGson(messages);
+    String json = convertToJsonUsingGson(comments);
     response.setContentType("application/json;");
     response.getWriter().println(json);
   }
 
   /**
-   * Converts a Java ArrayList<String> into a JSON string using the Gson library.
+   * Converts a Java ArrayList<Comment> into a JSON string using the Gson library.
    */
   private String convertToJsonUsingGson(ArrayList<Comment> listOfStrings) {
     String json = gson.toJson(listOfStrings);

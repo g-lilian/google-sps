@@ -9,7 +9,23 @@
 }
 
 #comments-container {
-  margin-top: 20px;
+
+}
+
+#comment-wrapper {
+
+}
+
+.row {
+  display: flex;
+}
+
+.column {
+  flex: 50%;
+  background-color: white;
+  padding-left: 10px;
+  padding-bottom: 20px;
+  height: 25px;
 }
 
 .image-thumbnails {
