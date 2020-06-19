@@ -36,10 +36,12 @@ import java.util.ArrayList;
 public class DataServlet extends HttpServlet {
   Gson gson;
   DatastoreService datastore;
+  LanguageServiceClient languageService;
 
-  public DataServlet() {
+  public DataServlet() throws IOException {
     gson = new Gson();
     datastore = DatastoreServiceFactory.getDatastoreService();
+    languageService = LanguageServiceClient.create();
   }
 
   @Override
@@ -51,8 +53,8 @@ public class DataServlet extends HttpServlet {
 
     for (Entity entity : results.asIterable()) {
         String comment_text = (String) entity.getProperty("text");
-        double sentiment_score = (double) entity.getProperty("sentiment");
-        Comment comment = new Comment(comment_text, sentiment_score);
+        double sentimentScore = (double) entity.getProperty("sentiment");
+        Comment comment = new Comment(comment_text, sentimentScore);
         comments.add(comment);
     }
 
@@ -74,14 +76,11 @@ public class DataServlet extends HttpServlet {
    */
   private static class Comment {
       String text;
-      double sentiment_score;
+      double sentimentScore;
 
-      public Comment(String text, double sentiment_score) {
+      public Comment(String text, double sentimentScore) {
         this.text = text;
-        // truncate the double
-        int temp = (int)(sentiment_score*100);
-        double truncated = temp/100d;
-        this.sentiment_score = truncated;
+        this.sentimentScore = sentimentScore;
       }
   }
 
@@ -93,10 +92,8 @@ public class DataServlet extends HttpServlet {
     // Calculate sentiment score.
     Document doc =
         Document.newBuilder().setContent(comment).setType(Document.Type.PLAIN_TEXT).build();
-    LanguageServiceClient languageService = LanguageServiceClient.create();
     Sentiment sentiment = languageService.analyzeSentiment(doc).getDocumentSentiment();
     float score = sentiment.getScore();
-    languageService.close();
 
     // Add the comment and its sentiment score to Datastore.
     if (!comment.equals("")) {
