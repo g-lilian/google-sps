@@ -10,6 +10,11 @@
   width: 650px;
 }
 
+#comments-container {
+  height: 300px;
+  overflow: auto;
+}
+
 #quote-container {
   margin-top: 20px;
 }

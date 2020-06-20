@@ -40,15 +40,16 @@
     <hr>
 
     <div id=comments-form>
-    <form action="/data" method="POST">
-      <h2>Comments</h2>
+      <form action="/data" method="POST">
+        <h2>Comments</h2>
+        <br>
+        <input type=text name="name-input" placeholder="Enter a name/alias."></input>
+        <br><br>
+        <textarea name="text-input" placeholder="How are you feeling today?" rows=3 cols=90 required></textarea>
+        <input type="submit"/>
+        <br><br>
+      </form>
       <div id="comments-container"></div>
-      <br>
-      <input type=text name="name-input" placeholder="Enter a name/alias."></input>
-      <br><br>
-      <textarea name="text-input" placeholder="How are you feeling today?" rows=3 cols=90 required></textarea>
-      <input type="submit"/>
-    </form>
     </div>
 
   </body>
