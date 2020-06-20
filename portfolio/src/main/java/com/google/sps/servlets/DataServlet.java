@@ -20,6 +20,9 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.cloud.language.v1.Document;
+import com.google.cloud.language.v1.LanguageServiceClient;
+import com.google.cloud.language.v1.Sentiment;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -28,40 +31,57 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 
 
-/** Servlet that returns some example content. TODO: modify this file to handle comments data */
+/** Servlet that processes comments and analyses comment sentiment. */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
   Gson gson;
   DatastoreService datastore;
+  LanguageServiceClient languageService;
 
-  public DataServlet() {
+  public DataServlet() throws IOException {
     gson = new Gson();
     datastore = DatastoreServiceFactory.getDatastoreService();
+    languageService = LanguageServiceClient.create();
   }
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {  
     // Get comments from Datastore and show on the page.
-    ArrayList<String> messages = new ArrayList<String>();
-    Query query = new Query("Comment").addSort("text", SortDirection.DESCENDING);
+    ArrayList<Comment> comments = new ArrayList<Comment>();
+    Query query = new Query("Comment").addSort("sentiment", SortDirection.DESCENDING);
     PreparedQuery results = datastore.prepare(query);
 
     for (Entity entity : results.asIterable()) {
-        String comment = (String) entity.getProperty("text");
-        messages.add(comment);
+        String comment_text = (String) entity.getProperty("text");
+        double sentimentScore = (double) entity.getProperty("sentiment");
+        Comment comment = new Comment(comment_text, sentimentScore);
+        comments.add(comment);
     }
 
-    String json = convertToJsonUsingGson(messages);
+    String json = convertToJsonUsingGson(comments);
     response.setContentType("application/json;");
     response.getWriter().println(json);
   }
 
   /**
-   * Converts a Java ArrayList<String> into a JSON string using the Gson library.
+   * Converts a Java ArrayList<Comment> into a JSON string using the Gson library.
    */
-  private String convertToJsonUsingGson(ArrayList<String> listOfStrings) {
+  private String convertToJsonUsingGson(ArrayList<Comment> listOfStrings) {
     String json = gson.toJson(listOfStrings);
     return json;
+  }
+
+  /**
+   * Class for comments.
+   */
+  private static class Comment {
+      String text;
+      double sentimentScore;
+
+      public Comment(String text, double sentimentScore) {
+        this.text = text;
+        this.sentimentScore = sentimentScore;
+      }
   }
 
   @Override
@@ -69,10 +89,17 @@ public class DataServlet extends HttpServlet {
     // Get the comment input from the form.
     String comment = getParameter(request, "text-input", "");
 
-    // Add the comment to Datastore.
+    // Calculate sentiment score.
+    Document doc =
+        Document.newBuilder().setContent(comment).setType(Document.Type.PLAIN_TEXT).build();
+    Sentiment sentiment = languageService.analyzeSentiment(doc).getDocumentSentiment();
+    float score = sentiment.getScore();
+
+    // Add the comment and its sentiment score to Datastore.
     if (!comment.equals("")) {
         Entity commentEntity = new Entity("Comment");
         commentEntity.setProperty("text", comment);
+        commentEntity.setProperty("sentiment", score);
         datastore.put(commentEntity);
     }
 
