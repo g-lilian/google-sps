@@ -12,12 +12,15 @@
   display: flex;
 }
 
-.column {
+.col-right{
   flex: 50%;
-  background-color: white;
+  padding-right: 10px;
+  text-align: right
+}
+
+.col-left {
+  flex: 50%;
   padding-left: 10px;
-  padding-bottom: 20px;
-  height: 25px;
 }
 
 .image-thumbnails {

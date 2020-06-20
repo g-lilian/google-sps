@@ -45,13 +45,13 @@ function createCommentSection(comment) {
 
   const sentimentScore = comment.sentimentScore.toFixed(2);
   commentWrapper.innerHTML = 
-    `<div class="row">
-      <div class="column">
-        <p>${comment.text}</p>
-      </div>
-      <div class="column">
-        <p>${sentimentScore}</p>
-      </div>
+    `<div class="row" style="background-color:gainsboro;">
+      <div class="col-left"><p>${comment.alias}</p></div>
+      <div class="col-right"><p>${comment.timestamp}</p></div>
+    </div>
+    <div class="row">
+      <div class="col-left"><p>${comment.text}</p></div>
+      <div class="col-right"><p>${sentimentScore}</p></div>
     </div><hr>`;
   return commentWrapper;
 }
