@@ -4,8 +4,34 @@
   width: 650px;
 }
 
+#comments-form {
+  margin-left: auto;
+  margin-right: auto;
+  width: 650px;
+}
+
 #quote-container {
   margin-top: 20px;
+}
+
+#header {
+    text-align: center;
+    padding: 6em 0 4em 0;
+}
+
+.avatar {
+    border-radius: 100%;
+    display: inline-block;
+    margin: 0 0 2em 0;
+    padding: 0.5em;
+    border: solid 1px rgba(255, 255, 255, 0.25);
+    background-color: rgba(255, 255, 255, 0.075);
+}
+
+.avatar img {
+    border-radius: 100%;
+    display: block;
+    width: 15em;
 }
 
 .row {
@@ -37,4 +63,19 @@
 
 .image-thumbnails img:hover {
   border: thick solid black;
+}
+
+body {
+    background-color: #000;
+    background-image: url("images/bg.jpg");
+    background-size: cover;
+    background-position: top center;
+    color: whitesmoke;
+}
+
+hr {
+  display: block;
+  border-width: 1px;
+  width: 700px;
+  background-color: gainsboro;
 }
