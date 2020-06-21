@@ -68,7 +68,7 @@ public class DataServlet extends HttpServlet {
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {  
     // Get comments from Datastore and show on the page.
     ArrayList<Comment> comments = new ArrayList<Comment>();
-    Query query = new Query("Comment").addSort("sentiment", SortDirection.DESCENDING);
+    Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
     PreparedQuery results = datastore.prepare(query);
 
     for (Entity entity : results.asIterable()) {
