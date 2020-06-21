@@ -45,14 +45,14 @@ function createCommentSection(comment) {
 
   const sentimentScore = comment.sentimentScore.toFixed(2);
   commentWrapper.innerHTML = 
-    `<div class="row">
-      <div class="column">
-        <p>${comment.text}</p>
-      </div>
-      <div class="column">
-        <p>${sentimentScore}</p>
-      </div>
-    </div><hr>`;
+    `<div class="row" style="background-color:gainsboro; color:black;">
+      <div class="col-left"><p>${comment.alias}</p></div>
+      <div class="col-right"><p>${comment.timestamp}</p></div>
+    </div>
+    <div class="row">
+      <div class="col-left"><p>${comment.text}</p></div>
+      <div class="col-right"><p>${sentimentScore}</p></div>
+    </div><br>`;
   return commentWrapper;
 }
 
@@ -87,6 +87,7 @@ async function drawChart() {
     'width':600,
     'height':400,
     'colors':['#FFC1C1','#AAD1A8','#A8B9D1'],
+    backgroundColor: 'transparent',
     'is3D':true
   };
 

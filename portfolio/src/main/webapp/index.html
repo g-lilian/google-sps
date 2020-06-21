@@ -4,21 +4,25 @@
     <meta charset="UTF-8">
     <title>Lilian's Portfolio</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="assets/css/font-awesome.min.css">
     <script src="script.js"></script>
   </head>
   <body onload="getComments()">
+    <header id="header">
+      <span class="avatar"><img src="images/photo.jpg" alt="" /></span>
+      <h1>Guo Lilian</h1>
+      <p>Personal Portfolio</p>
+      <a href="https://www.linkedin.com/in/lilian-guo" class="icon"><i class="fa fa-linkedin" style="color:white"></i></a>
+      <a href="https://github.com/g-lilian" class="icon"><i class="fa fa-github" style="color:white"></i></a>
+    </header>
+    <hr>
     <div id="content">
-      <h1>Portfolio</h1>
       <h2>About Me</h2>
       <p>
           Hi, I'm Lilian, a third-year Computer Engineering major from NUS! 
           I'm currently interning as a machine learning engineer over the summer. 
           In my spare time I read novels, play games and try to improve my 
           drawing skills.
-          <p>
-              <a href="https://github.com/g-lilian">Github</a> 
-              <a href="https://www.linkedin.com/in/lilian-guo">LinkedIn</a>
-          </p>
       </p>
       <p>Click the button to spawn one of my favourite quotes:</p>
       <button onclick="addRandomQuote()">Quote</button>
@@ -26,19 +30,27 @@
       <p></p>
       <p>See some of my previous <a href="projects.html">projects.</a></p>
       <p>Check out the <a href="gallery.html">gallery</a> :)</p>
-      <img src="images/photo.jpg"/>
-      <form action="/data" method="POST">
-        <p>
-            <script src="https://www.gstatic.com/charts/loader.js"></script>
-            <script src="script.js"></script>
-            <div id="chart-container"></div>
-            <h2>Comments</h2>
-            <div id="comments-container"></div>
-            <br/><br/>
-            <textarea name="text-input"></textarea>
-            <input type="submit" />
-        </p>
-      </form>
+
+      <div id=piechart>
+        <script src="https://www.gstatic.com/charts/loader.js"></script>
+        <script src="script.js"></script>
+        <div id="chart-container" align='center'></div>
+      </div>
     </div>
+    <hr>
+
+    <div id=comments-form>
+      <form action="/data" method="POST">
+        <h2>Comments</h2>
+        <br>
+        <input type=text name="name-input" placeholder="Enter a name/alias."></input>
+        <br><br>
+        <textarea name="text-input" placeholder="How are you feeling today?" rows=3 cols=90 required></textarea>
+        <input type="submit"/>
+        <br><br>
+      </form>
+      <div id="comments-container"></div>
+    </div>
+
   </body>
 </html>

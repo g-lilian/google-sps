@@ -28,6 +28,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.time.format.DateTimeFormatter;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 
@@ -44,6 +46,24 @@ public class DataServlet extends HttpServlet {
     languageService = LanguageServiceClient.create();
   }
 
+  /**
+   * Class for comments.
+   */
+  private static class Comment {
+      String text;
+      double sentimentScore;
+      String timestamp;
+      String alias;
+
+      public Comment(String text, double sentimentScore, String timestamp, String alias) {
+        this.text = text;
+        this.sentimentScore = sentimentScore;
+        this.timestamp = timestamp;
+        this.alias = alias;
+      }
+  }
+
+  /** Get comments from Datastore and send to script.js. */
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {  
     // Get comments from Datastore and show on the page.
@@ -52,9 +72,11 @@ public class DataServlet extends HttpServlet {
     PreparedQuery results = datastore.prepare(query);
 
     for (Entity entity : results.asIterable()) {
-        String comment_text = (String) entity.getProperty("text");
+        String commentText = (String) entity.getProperty("text");
         double sentimentScore = (double) entity.getProperty("sentiment");
-        Comment comment = new Comment(comment_text, sentimentScore);
+        String timestamp = (String) entity.getProperty("timestamp");
+        String alias = (String) entity.getProperty("alias");
+        Comment comment = new Comment(commentText, sentimentScore, timestamp, alias);
         comments.add(comment);
     }
 
@@ -66,28 +88,22 @@ public class DataServlet extends HttpServlet {
   /**
    * Converts a Java ArrayList<Comment> into a JSON string using the Gson library.
    */
-  private String convertToJsonUsingGson(ArrayList<Comment> listOfStrings) {
-    String json = gson.toJson(listOfStrings);
+  private String convertToJsonUsingGson(ArrayList<Comment> commentsList) {
+    String json = gson.toJson(commentsList);
     return json;
   }
 
-  /**
-   * Class for comments.
-   */
-  private static class Comment {
-      String text;
-      double sentimentScore;
-
-      public Comment(String text, double sentimentScore) {
-        this.text = text;
-        this.sentimentScore = sentimentScore;
-      }
-  }
-
+  /** Get comments from form, calculate sentiment score and put in Datastore. */
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     // Get the comment input from the form.
     String comment = getParameter(request, "text-input", "");
+    String alias = getParameter(request, "name-input", "anonymous");
+
+    // Get current timestamp for time when comment is posted.
+    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+    LocalDateTime now = LocalDateTime.now();
+    String timestamp = dtf.format(now);
 
     // Calculate sentiment score.
     Document doc =
@@ -96,12 +112,12 @@ public class DataServlet extends HttpServlet {
     float score = sentiment.getScore();
 
     // Add the comment and its sentiment score to Datastore.
-    if (!comment.equals("")) {
-        Entity commentEntity = new Entity("Comment");
-        commentEntity.setProperty("text", comment);
-        commentEntity.setProperty("sentiment", score);
-        datastore.put(commentEntity);
-    }
+    Entity commentEntity = new Entity("Comment");
+    commentEntity.setProperty("text", comment);
+    commentEntity.setProperty("sentiment", score);
+    commentEntity.setProperty("timestamp", timestamp);
+    commentEntity.setProperty("alias", alias);
+    datastore.put(commentEntity);
 
     // Redirect back to the main page.
     response.sendRedirect("/index.html");
@@ -113,7 +129,7 @@ public class DataServlet extends HttpServlet {
    */
   private String getParameter(HttpServletRequest request, String name, String defaultValue) {
     String value = request.getParameter(name);
-    if (value == null) {
+    if (value.isEmpty()) {
       return defaultValue;
     }
     return value;
