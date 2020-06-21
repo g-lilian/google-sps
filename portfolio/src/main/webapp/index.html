@@ -9,7 +9,7 @@
   </head>
   <body onload="getComments()">
     <header id="header">
-      <span class="avatar"><img src="images/photo.jpg" alt="" /></span>
+      <span class="avatar img-hover-zoom--colorize"><img src="images/photo.jpg" alt="" /></span>
       <h1>Guo Lilian</h1>
       <p>Personal Portfolio</p>
       <a href="https://www.linkedin.com/in/lilian-guo" class="icon"><i class="fa fa-linkedin" style="color:white"></i></a>
@@ -19,13 +19,16 @@
     <div id="content">
       <h2>About Me</h2>
       <p>
-          Hi, I'm Lilian, a third-year Computer Engineering major from NUS! 
-          I'm currently interning as a machine learning engineer over the summer. 
-          In my spare time I read novels, play games and try to improve my 
-          drawing skills.
+        Hi, I'm Lilian, a third-year Computer Engineering major from NUS! 
+        I'm currently interning as a machine learning engineer over the summer. 
+        In my spare time I read novels, play games and try to improve my 
+        drawing skills.
       </p>
-      <p>Click the button to spawn one of my favourite quotes:</p>
-      <button onclick="addRandomQuote()">Quote</button>
+      <p>
+        Click the button to 
+        <button onclick="addRandomQuote()" class="button" style="color:#A8B9D1; border-color:#A8B9D1;">spawn</button> 
+        one of my favourite quotes:
+      </p>
       <div id="quote-container"></div>
       <p></p>
       <p>See some of my previous <a href="projects.html">projects.</a></p>
@@ -43,10 +46,10 @@
       <form action="/data" method="POST">
         <h2>Comments</h2>
         <br>
-        <input type=text name="name-input" placeholder="Enter a name/alias."></input>
+        <input type=text name="name-input" placeholder="Enter a name/alias." class="text-field"></input>
         <br><br>
-        <textarea name="text-input" placeholder="How are you feeling today?" rows=3 cols=90 required></textarea>
-        <input type="submit"/>
+        <textarea name="text-input" placeholder="How are you feeling today?" rows=3 cols=110 required class="text-field"></textarea>
+        <p><input type="submit" class="button"/></p>
         <br><br>
       </form>
       <div id="comments-container"></div>
