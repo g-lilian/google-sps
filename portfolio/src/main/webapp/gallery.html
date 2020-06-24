@@ -5,11 +5,18 @@
     <title>Image Gallery</title>
     <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
+    <script src="nav.js"></script>
   </head>
   <body>
-    <div id="content">
+    <div class="navigator-container">
+        <a href="#featured" class="navigator"></a>
+        <a href="#drawings" class="navigator"></a>
+        <a href="#photographs" class="navigator"></a>
+    </div>
+    <div class="content">
       <p><a href="index.html" class="button">Return to main</a></p>
       <h1>Gallery</h1>
+      <section id="featured">
       <hr>
       <h3>Featured</h3>
       <video width="640" height="352" controls>
@@ -31,6 +38,8 @@
             "reimagined" and converted into its sparkly galactic version.
           </p>
       </div>
+      </section>
+      <section id="drawings">
       <hr>
       <h3>Drawings</h3>
       <p>In my spare time, I enjoy painting in both digital (graphics tablet and software like Photoshop) and traditional mediums.</p>
@@ -46,6 +55,8 @@
         <img id="winter-img" src="images/gallery/winter.jpg" onclick="displayModal('winter-img')"
             alt="Part 3/3. Winter. Acrylic on canvas."/>
       </div>
+      </section>
+      <section id="photographs">
       <hr>
       <h3>Photographs</h3>
       <p>Pictures taken around the world and at home using my phone's camera :O</p>
@@ -70,6 +81,7 @@
         <div id="modal-caption"></div>
         <img class="modal-content" id="modal-img">
       </div>
+      </section>
       <p><a href="index.html" class="button">Return to main</a></p>
     </div>
   </body>
