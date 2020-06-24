@@ -8,19 +8,67 @@
   </head>
   <body>
     <div id="content">
+      <p><a href="index.html" class="button">Return to main</a></p>
       <h1>Gallery</h1>
-      <p>Some of my drawings and the cool places I've been to.</p>
+      <hr>
+      <h3>Featured</h3>
+      <video width="640" height="352" controls>
+        <source src="images/gallery/dancer.mp4" type="video/mp4">
+      </video>
+      <p>
+        <button id="dancer-button" onclick="toggleVideoDescription()" class="button" style="color:#A8B9D1; border-color:#A8B9D1;">
+          What's up with this video?
+        </button>
+      </p>
+      <div id="dancer-container" style="display: none;">
+          <p>
+            This looks like a video of a ballet dancer passed through some kind of galaxy filter. Well yes... 
+            that's true, but it's not really as simple as that. This "filter" was created using a conditional 
+            Generative Adversarial Network (cGAN), a type of neural network that 
+            is capable of morphing the input provided (in this case, images of a ballet dancer) to resemble 
+            the data that was used for training. During my internship at Pensees, I trained a cGAN with 500 photos 
+            of multi-coloured nebulae. The result is that whatever image I feed into the network will be 
+            "reimagined" and converted into its sparkly galactic version.
+          </p>
+      </div>
+      <hr>
+      <h3>Drawings</h3>
+      <p>In my spare time, I enjoy painting in both digital (graphics tablet and software like Photoshop) and traditional mediums.</p>
       <div class="thumbnails">
-          <img id="moon-img" alt="testingcaption" src="images/moon.jpg" onclick="displayModal('moon-img')"/>
-          <img id="kaonashi-img" src="images/kaonashi.png" onclick="displayModal('kaonashi-img')"/>
-          <img id="chiangmai-img" src="images/chiangmai.jpg" onclick="displayModal('chiangmai-img')"/>
-          <img id="uchisar-img" src="images/uchisar.jpg" onclick="displayModal('uchisar-img')"/>
-          <img id="balloon-img" src="images/balloon.jpg" onclick="displayModal('balloon-img')"/>
+        <img id="moon-img" src="images/gallery/moon.jpg" onclick="displayModal('moon-img')" 
+            alt="The koi pond that reflects space."/>
+        <img id="kaonashi-img" src="images/gallery/kaonashi.png" onclick="displayModal('kaonashi-img')"
+            alt="No-face from the movie Spirited Away."/>
+        <img id="spring-img" src="images/gallery/spring.jpg" onclick="displayModal('spring-img')"
+            alt="Part 1/3. Spring. Acrylic on canvas."/>
+        <img id="autumn-img" src="images/gallery/autumn.jpg" onclick="displayModal('autumn-img')"
+            alt="Part 2/3. Autumn. Acrylic on canvas."/>
+        <img id="winter-img" src="images/gallery/winter.jpg" onclick="displayModal('winter-img')"
+            alt="Part 3/3. Winter. Acrylic on canvas."/>
+      </div>
+      <hr>
+      <h3>Photographs</h3>
+      <p>Pictures taken around the world and at home using my phone's camera :O</p>
+      <div class="thumbnails">
+        <img id="chiangmai-img" src="images/gallery/chiangmai.jpg" onclick="displayModal('chiangmai-img')"
+            alt="A street in Chiangmai, Thailand."/>
+        <img id="uchisar-img" src="images/gallery/uchisar.jpg" onclick="displayModal('uchisar-img')"
+            alt="Uchisar, a settlement in Cappadocia, Turkey. The castle is cut entirely out of the rocky mountain."/>
+        <img id="balloon-img" src="images/gallery/balloon.jpg" onclick="displayModal('balloon-img')"
+            alt="During sunrise, from a hot air balloon on top of Cappadocia."/>
+        <img id="beach-img" src="images/gallery/beach.jpg" onclick="displayModal('beach-img')"
+            alt="During sunset, from a beach in Phi Phi Island, Thailand."/>
+        <img id="swing-img" src="images/gallery/swing.jpg" onclick="displayModal('swing-img')"
+            alt="My mother on a swing."/>
+        <img id="roof-img" src="images/gallery/roof.jpg" onclick="displayModal('roof-img')"
+            alt="View from the rooftop of my house."/>
+        <img id="portal-img" src="images/gallery/portal.jpg" onclick="displayModal('portal-img')"
+            alt="A corridor leading to the rooftop garden."/>
       </div>
       <div id="modal-id" class="modal">
         <span class="close">&times;</span>
+        <div id="modal-caption"></div>
         <img class="modal-content" id="modal-img">
-        <div id="caption"></div>
       </div>
       <p><a href="index.html" class="button">Return to main</a></p>
     </div>

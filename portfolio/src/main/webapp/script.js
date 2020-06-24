@@ -1,3 +1,7 @@
+//================================================================================
+// Quotes
+//================================================================================
+
 var prevQuoteNum = 0;
 
 /** Adds a random quote to the page. */
@@ -23,6 +27,10 @@ function addRandomQuote() {
   quoteContainer.innerText = quotes[newQuoteNum];
   prevQuoteNum = newQuoteNum;
 }
+
+//================================================================================
+// Comments
+//================================================================================
 
 /** Fetch comments from backend and display in sections. */
 async function getComments() {
@@ -55,6 +63,10 @@ function createCommentSection(comment) {
     </div><br>`;
   return commentWrapper;
 }
+
+//================================================================================
+// Charts
+//================================================================================
 
 google.charts.load('current', {'packages':['corechart']});
 google.charts.setOnLoadCallback(drawChart);
@@ -96,6 +108,10 @@ async function drawChart() {
   chart.draw(data, options);
 }
 
+//================================================================================
+// Gallery
+//================================================================================
+
 /** Display gallery modal image. */
 function displayModal(img_id) {
   // Get the modal
@@ -104,7 +120,7 @@ function displayModal(img_id) {
   // Get the image and insert it inside the modal - use its "alt" text as a caption
   var img = document.getElementById(img_id);
   var modalImg = document.getElementById("modal-img");
-  var captionText = document.getElementById("caption");
+  var captionText = document.getElementById("modal-caption");
   modal.style.display = "block";
   modalImg.src = img.src;
   captionText.innerHTML = img.alt;
@@ -115,5 +131,18 @@ function displayModal(img_id) {
   // When the user clicks on <span> (x), close the modal
   span.onclick = function() { 
     modal.style.display = "none";
+  }
+}
+
+/** Toggle description for dancer video. */
+function toggleVideoDescription() {
+  // Add description to the page.
+  const dancerContainer = document.getElementById('dancer-container');
+  
+  // Toggle the display.
+  if (dancerContainer.style.display === 'none') {
+    dancerContainer.style.display = 'block';
+  } else {
+    dancerContainer.style.display = 'none';
   }
 }
