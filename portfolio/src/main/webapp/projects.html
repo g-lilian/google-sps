@@ -4,57 +4,114 @@
     <meta charset="UTF-8">
     <title>Projects</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="assets/css/font-awesome.min.css">
+    <script src="script.js"></script>
+    <script src="nav.js"></script>
   </head>
   <body>
-    <div id="content">
+    <div class="navigator-container">
+        <a href="#ai-projects" class="navigator"></a>
+        <a href="#game-projects" class="navigator"></a>
+        <a href="#robotics-projects" class="navigator"></a>
+    </div>
+    <div class="content">
+      <p><a href="index.html" class="button">Return to main</a></p>
       <h1>Projects</h1>
       <p>
           Inside and outside of school, I've worked on a bunch of projects 
           involving things like AI, game development and robotics.
       </p>
-      <h2>Clothesvolutional</h2>
-      <p>
-          Clothesvolutional is an AI project conceived for the Splash Awards 
-          competition organised by Singapore Computer Society. It progressed to 
-          the final round and eventually won a Special Award (Finance). 
-          My team developed a prototype of an e-commerce platform which uses hand-drawn sketches to 
-          search for similar clothing listings. This was done by using a Generative 
-          Adversarial Network to convert the user's sketch input into a photo-realistic 
-          image of their desired piece of clothing. The 
-          image is then channeled to a reverse image search engine, which returns 
-          similar results found online.
-      </p>
-      <div class="image-thumbnails">
-          <a href="images/clothesvolutional_1.jpg"><img src="images/clothesvolutional_1.jpg"/></a>
-          <a href="images/clothesvolutional_2.jpg"><img src="images/clothesvolutional_2.jpg"/></a>
-      </div>
-      <h2>Memory Lanes</h2>
-      <p>
-          Memory Lanes is a puzzle and strategy game built with the Unity 3D 
-          engine. It won First Place in the Gamecraft Hackathon 2019 organised 
-          by NUS Game Development Group. The game revolves around the theme 
-          "save", and the core mechanic involves saving and restoring the game 
-          state at strategic moments to pass checkpoints on the level. 
-          During the hackathon, I worked with a team of 4 others to build a 
-          fully playable game with 9 different levels and custom assets.
-      </p>
-      <div class="image-thumbnails">
-          <a href="images/memory_lanes_title.jpg"><img src="images/memory_lanes_title.jpg"/></a>
-          <a href="images/memory_lanes_ss.jpg"><img src="images/memory_lanes_ss.jpg"/></a>
-      </div>
-      <h2>RTOS Project - Ivar</h2>
-      <p>
-          Ivar is a robotic vehicle equipped with flashing LEDs and a music 
-          player, and can be operated using a mobile app. As part of a module on 
-          real-time operating systems, my project mate and I designed the OS 
-          and all functionalities, and implemented it on the ARM Cortex M0+ 
-          microcontroller. We also had to solder components and connect the 
-          hardware parts ourselves while trying not to fry the board.
-      </p>
-      <div class="image-thumbnails">
-          <a href="images/robot.jpg"><img src="images/robot.jpg"/></a>
-      </div>
-      <p><a href="index.html">Return to main</a></p>
+    </div>
+      <section id="ai-projects">
+        <hr>
+        <div class="content">
+          <h2>Clothesvolutional</h2>
+          <p>
+            Clothesvolutional is an AI project conceived for the Splash Awards 
+            competition organised by Singapore Computer Society. It progressed to 
+            the final round and eventually won a Special Award (Finance). 
+            My team developed a prototype of an e-commerce platform which uses hand-drawn sketches to 
+            search for similar clothing listings. This was done by using a Generative 
+            Adversarial Network (GAN) to convert the user's sketch input into a photo-realistic 
+            image of their desired piece of clothing. The 
+            image is then channeled to a reverse image search engine, which returns 
+            similar results found online.
+          </p>
+          <div class="thumbnails">
+            <img id="clothes1-img" src="images/projects/clothesvolutional_1.jpg" onclick="displayModal('clothes1-img')" 
+            alt="The sketch on the left is passed as input to a GAN, converted into a photorealistic image, 
+            and then used to search for clothes listings online."/>
+            <img id="clothes2-img" src="images/projects/clothesvolutional_2.jpg" onclick="displayModal('clothes2-img')" 
+            alt="More examples of our GAN generated results."/>
+          </div>
+        </div>
+      </section>
+      
+      <section id="game-projects">
+        <hr>
+        <div class="content">
+          <h2>Memory Lanes</h2>
+          <p>
+            Memory Lanes is a puzzle and strategy game built with the Unity 3D 
+            engine. It won First Place in the Gamecraft Hackathon 2019 organised 
+            by NUS Game Development Group. The game revolves around the theme 
+            "save", and the core mechanic involves saving and restoring the game 
+            state at strategic moments to pass checkpoints on the level. 
+            During the hackathon, I worked with a team of 4 others to build a 
+            fully playable game with 9 different levels and custom assets.
+          </p>
+          <div class="thumbnails">
+            <img id="memory1-img" src="images/projects/memory_lanes_title.jpg" onclick="displayModal('memory1-img')" 
+            alt=""/>
+            <img id="memory2-img" src="images/projects/memory_lanes_ss.jpg" onclick="displayModal('memory2-img')" 
+            alt=""/>
+            <img id="memory3-img" src="images/projects/memory_lanes_ss2.jpg" onclick="displayModal('memory3-img')" 
+            alt=""/>
+          </div>
+        </div>
+      </section>
+      
+      <section id="robotics-projects">
+        <hr>
+        <div class="content">
+          <h2>FPGA Programming - Whack a Mole</h2>
+          <p>
+            As part of a module on Digital Design, I implemented a sound volume 
+            display and Whack a Mole game using the Basys 3 board, a microphone, 
+            and an OLED screen. The mic detects whacking sounds, and the 
+            player's score is registered on the 7 segments screen built into the 
+            board. The entire project is <a href="https://github.com/g-lilian/project_mole">coded in Verilog</a>.
+          </p>
+          <div class="thumbnails">
+            <img id="mole1-img" src="images/projects/mole-1.jpg" onclick="displayModal('mole1-img')" 
+            alt="Volume bar animates according to volume detected by mic."/>
+            <img id="mole2-img" src="images/projects/mole-2.jpg" onclick="displayModal('mole2-img')" 
+            alt="Mole on OLED screen."/>
+          </div>
+          <video width="500" controls style="margin:auto;display:block;">
+            <source src="images/projects/mole.mp4" type="video/mp4">
+          </video>
+          <h2>RTOS Project - Ivar</h2>
+          <p>
+            Ivar is a robotic vehicle equipped with flashing LEDs and a music 
+            player, and can be operated using a mobile app. As part of a module on 
+            real-time operating systems, my project mate and I designed the OS 
+            and all functionalities, and implemented it on the ARM Cortex M0+ 
+            microcontroller. We also had to solder components and connect the 
+            hardware parts ourselves while trying not to fry the board.
+          </p>
+          <div class="thumbnails">
+            <img id="robot-img" src="images/projects/robot.jpg" onclick="displayModal('robot-img')" 
+            alt=""/>
+          </div>
+          <div id="modal-id" class="modal">
+            <span class="close">&times;</span>
+            <div id="modal-caption"></div>
+            <img class="modal-content" id="modal-img">
+          </div>
+          <p><a href="index.html" class="button">Return to main</a></p>
+        </div>
+      </section>
     </div>
   </body>
 </html>

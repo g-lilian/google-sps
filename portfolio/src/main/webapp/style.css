@@ -1,4 +1,4 @@
-#content {
+.content {
   margin-left: auto;
   margin-right: auto;
   width: 650px;
@@ -112,6 +112,39 @@
       background-color: rgba(255, 255, 255, 0.25);
     }
 
+.navigator-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: -webkit-fixed;
+  position: fixed;
+  right: 10%;
+  bottom: 50%;
+}
+
+.navigator {
+  transition: all 0.2s ease;
+  background-color: rgba(0, 0, 0, 0.1);
+  margin-top: 5px;
+  border-radius: 50%;
+  text-align: center;
+  width: 20px;
+  height: 20px;
+  display: block;
+}
+
+    .navigator:hover {
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .current {
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+
+html {
+  scroll-behavior: smooth;
+}
+
 .button {
   background-color: rgba(255, 255, 255, 0);
   border-style: solid;
@@ -124,6 +157,7 @@
   display: inline-block;
   margin: 4px 2px;
   outline:none;
+  transition: all 0.2s ease;
   cursor:pointer;
 }
 
@@ -231,4 +265,25 @@ hr {
 ::selection {
   background-color: #FFC1C1;
   color: white;
+}
+
+/* Scrollbar */
+/* Width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
 }

@@ -15,9 +15,89 @@
 package com.google.sps;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;  
 
 public final class FindMeetingQuery {
-  public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
-    throw new UnsupportedOperationException("TODO: Implement this method.");
-  }
+    ArrayList<TimeRange> possibleTimes;
+
+    public FindMeetingQuery() {
+        possibleTimes = new ArrayList<TimeRange>();
+    }
+
+    public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
+        possibleTimes.clear();
+        long reqDuration = request.getDuration();
+        Collection<String> reqAttendees = request.getAttendees();
+
+        // Special cases
+        if (reqDuration > TimeRange.WHOLE_DAY.duration()) {
+            return possibleTimes;
+        }
+
+        // Collection of clashing events' (events where at least one attendee belongs to reqAttendees) timeranges
+        List<TimeRange> clashingEventTimes = events.stream()
+            .filter(event -> isClashingEvent(event, reqAttendees))
+            .map(event -> event.getWhen())
+            .collect(Collectors.toList()); 
+
+        // Check for case where there is no clashing event
+        if (clashingEventTimes.size() == 0) {
+            possibleTimes.add(TimeRange.WHOLE_DAY);
+            return possibleTimes;
+        }
+
+        // Sort by ascending start time
+        Collections.sort(clashingEventTimes, TimeRange.ORDER_BY_START);
+
+        // First check if there is space before the start of the first event
+        int startOfFirstEvent = clashingEventTimes.get(0).start();
+        addPossibleTimeRange(0, startOfFirstEvent, reqDuration);
+
+        // Find available times in between the clashing events
+        int start = clashingEventTimes.get(0).start();
+        int end = clashingEventTimes.get(0).end();
+
+        for (int i=0; i<clashingEventTimes.size(); i++) {
+            TimeRange eventTime = clashingEventTimes.get(i);
+            if (i+1 < clashingEventTimes.size()) { // If this is not the last event
+                // Check the next event's time range
+                TimeRange nextEventTime = clashingEventTimes.get(i+1);
+                if (eventTime.contains(nextEventTime)) continue;
+                if (eventTime.overlaps(nextEventTime)) {
+                    end = nextEventTime.end();
+                } else {
+                    // Check if time between events is enough for meeting duration
+                    addPossibleTimeRange(end, nextEventTime.start(), reqDuration);
+                    start = nextEventTime.start();
+                    end = nextEventTime.end();
+                }
+            }
+        }
+
+        // Check if there is space after the end of the last event
+        addPossibleTimeRange(end, TimeRange.END_OF_DAY + 1, reqDuration);
+
+        return possibleTimes;
+    }
+
+    private boolean isClashingEvent(Event event, Collection<String> reqAttendees) {
+        Set<String> eventAttendees = event.getAttendees();
+        for (String attendee : eventAttendees) {
+            if (reqAttendees.contains(attendee)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void addPossibleTimeRange(int start, int end, long reqDuration) {
+        if (end - start >= reqDuration) {
+            TimeRange possibleTime = new TimeRange(start, end - start);
+            possibleTimes.add(possibleTime);
+        }
+    }
 }
