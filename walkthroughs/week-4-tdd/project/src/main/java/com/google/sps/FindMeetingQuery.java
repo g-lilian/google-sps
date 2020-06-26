@@ -29,6 +29,7 @@ public final class FindMeetingQuery {
     }
 
     public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
+        possibleTimes.clear();
         long reqDuration = request.getDuration();
         Collection<String> reqAttendees = request.getAttendees();
 
@@ -38,17 +39,13 @@ public final class FindMeetingQuery {
         }
 
         // Collection of clashing events' (events where at least one attendee belongs to reqAttendees) timeranges
-        List<TimeRange> clashingEventTimes = new ArrayList<TimeRange>();
-
-        // Check each event in events collection
-        clashingEventTimes = events.stream()
+        List<TimeRange> clashingEventTimes = events.stream()
             .filter(event -> isClashingEvent(event, reqAttendees))
             .map(event -> event.getWhen())
             .collect(Collectors.toList()); 
 
         // Check for case where there is no clashing event
-        int numEvents = clashingEventTimes.size();
-        if (numEvents == 0) {
+        if (clashingEventTimes.size() == 0) {
             possibleTimes.add(TimeRange.WHOLE_DAY);
             return possibleTimes;
         }
@@ -64,9 +61,9 @@ public final class FindMeetingQuery {
         int start = clashingEventTimes.get(0).start();
         int end = clashingEventTimes.get(0).end();
 
-        for (int i=0; i<numEvents; i++) {
+        for (int i=0; i<clashingEventTimes.size(); i++) {
             TimeRange eventTime = clashingEventTimes.get(i);
-            if (i+1 < numEvents) { // If this is not the last event
+            if (i+1 < clashingEventTimes.size()) { // If this is not the last event
                 // Check the next event's time range
                 TimeRange nextEventTime = clashingEventTimes.get(i+1);
                 if (eventTime.contains(nextEventTime)) continue;
