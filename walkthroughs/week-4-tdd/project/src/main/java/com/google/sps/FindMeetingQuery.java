@@ -17,6 +17,7 @@ package com.google.sps;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;  
 
@@ -37,28 +38,13 @@ public final class FindMeetingQuery {
         }
 
         // Collection of clashing events' (events where at least one attendee belongs to reqAttendees) timeranges
-        ArrayList<TimeRange> clashingEventTimes = new ArrayList<TimeRange>();
+        List<TimeRange> clashingEventTimes = new ArrayList<TimeRange>();
 
         // Check each event in events collection
-        // clashingEventTimes = events.stream()
-        //     .filter(event -> isClashingEvent(event, reqAttendees))
-        //     .map(event -> event.getWhen())
-        //     .collect(Collectors.toList()); 
-        // print(clashingEventTimes);
-        for (Event event : events) {
-            Set<String> eventAttendees = event.getAttendees();
-
-            // Check if any of the requested attendees need to attend this event
-            boolean isClashingEvent = false;
-            for (String attendee : eventAttendees) {
-                if (reqAttendees.contains(attendee)) {
-                    isClashingEvent = true;
-                    break;
-                }
-            }
-            if (isClashingEvent == false) continue;
-            clashingEventTimes.add(event.getWhen());
-        }
+        clashingEventTimes = events.stream()
+            .filter(event -> isClashingEvent(event, reqAttendees))
+            .map(event -> event.getWhen())
+            .collect(Collectors.toList()); 
 
         // Check for case where there is no clashing event
         int numEvents = clashingEventTimes.size();
